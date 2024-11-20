@@ -1,0 +1,297 @@
+*{
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+  color: white;
+  font-family: "Arimo", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+html {
+  box-sizing: border-box;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  tab-size: 4;
+  text-size-adjust: 100%;
+  word-break: normal;
+}
+body {
+  overflow-x: hidden;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 30px;
+  background-color: #171717;
+}
+.back {
+  z-index: -1;
+  width: 100%;
+  position: absolute;
+  top: 7in;
+  left: 0px;
+  opacity: 1;
+  display: block
+}
+.name {
+  width: 50%;
+  text-align: center;
+  margin-bottom: 34px;
+}
+.welcome {
+  width: 88%;
+  margin-bottom: 28px;
+}
+.resumo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  width: 88%;
+  margin-bottom: 20px;
+}
+.vendas {
+  display: flex;
+  flex-direction: column;
+  border: 0.8px solid grey;
+  width: 85%;
+  height: 80px;
+  border-radius: 12px;
+  padding-left: 5%;
+  padding-top: 18px;
+  margin-bottom: 16px;
+  text-decoration: none;
+}
+.subnome {
+  position: absolute;
+  top: 20px;
+  right: 8%;
+  font-size: 13px;
+  color: #DFDFDF
+}
+.value {
+  margin-top: 15px;
+  font-size: 22px;
+  letter-spacing: -0.5px;
+  color: #1496FF;
+}
+.subvalue {
+  position: absolute;
+  top: 55px;
+  right: 8%;
+  font-size: 13px;
+  color: white
+}
+.g {
+  color: #1A9361;
+}
+.y {
+  color: #E69305;
+}
+.total {
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  top: 5px;
+  color: #DFDFDF
+}
+.percent {
+  position: absolute;
+  top: 55px;
+  font-size: 13px;
+  color: #DFDFDF;
+}
+.meta {
+  position: absolute;
+  top: 55px;
+  font-size: 13px;
+  color: #DFDFDF;
+  right: 5%;
+}
+.line {
+  top: 40px;
+  width: 95%;
+  height: 10px;
+  background-color: #474747;
+  border-radius: 15px;
+  overflow: hidden;
+  & div {
+    width: 47%;
+    height: 100%;
+    background-color: #1496FF;
+  }
+}
+.extrato {
+  width: 90%;
+  margin-bottom: 15px;
+}
+.saque {
+  display: flex;
+  flex-direction: column;
+  border: 1px dashed grey;
+  width: 85%;
+  height: 85px;
+  border-radius: 12px;
+  padding-top: 15px;
+  padding-left: 5%;
+  margin-bottom: 15px;
+  
+}
+.valor-saque {
+  display: flex;
+  gap: 5px;
+  color: grey;
+}
+.data {
+  position: absolute;
+  right: 5%;
+  display: flex;
+  gap: 5px;
+  color: grey;
+}
+.type {
+  position: absolute;
+  display: flex;
+  gap: 5px;
+  color: grey;
+  bottom: 15px;
+}
+.id {
+  bottom: 15px;
+  position: absolute;
+  right: 5%;
+  display: flex;
+  gap: 5px;
+  color: grey;
+}
+.new {
+  width: 90%;
+  height: 45px;
+  background-color: transparent;
+  border: 1px solid grey;
+  color: white;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 100%;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.bxs-chevron-right {
+  position: absolute;
+  top: 40%;
+  right: 5%;
+  font-size: 22px;
+}
+.menu {
+  position: fixed;
+  bottom: -30px;
+  border: 1px dashed grey;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  opacity: 1;
+  z-index: 9;
+  border-radius: 30px;
+}
+.main-menu {
+  position: relative;
+  padding-top: 42px;
+  width: 100%;
+  height: 100%;
+  background-color: #171717;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.newvenda {
+  width: 80%;
+  font-size: 17px;
+  margin-bottom: 35px;
+}
+.closemenu {
+  position: absolute;
+  right: 10%;
+  width: 24px;
+  height: 24px;
+  border: 1px dashed grey;
+  background-color: transparent;
+  color: #1496FF;
+  border-radius: 100%;
+}
+.depositmenu {
+  display: none;
+}
+.valor {
+  width: 80%;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+#valor {
+  width: 78%;
+  height: 45px;
+  padding-left: 15px;
+  background-color: transparent;
+  border: 1px solid grey;
+  color: #1496FF;
+  border-radius: 9px;
+  font-weight: bold;
+  outline: none;
+  margin-bottom: 15px;
+}
+.submit {
+  width: 80%;
+  height: 50px;
+  background-color: #1496FF;
+  font-weight: bold;
+  color: white;
+  border: none;
+  border-radius: 10px;
+}
+.chave {
+  position: fixed;
+  margin-top: 40px;
+  width: 86%;
+  height: 505px;
+  backdrop-filter: blur(5px);
+  border: 0.5px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  z-index: 10;
+  overflow: hidden;
+}
+.main-chave {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  gap: 25px;
+}
+.qr {
+  width: 80%;
+}
+.code {
+  font-weight: bold;
+}
+.copiar {
+  width: 80%;
+  height: 50px;
+  background-color: #1496FF;
+  font-weight: bold;
+  color: white;
+  border: none;
+  border-radius: 10px;
+}
+#code {
+    display: inline-block;
+    width: 25ch; /* Limita o tamanho visível a 25 caracteres */
+    overflow: hidden; /* Oculta o texto que ultrapassa o limite */
+    white-space: nowrap; /* Impede a quebra de linha */
+    text-overflow: ellipsis; /* Adiciona "..." no final se o texto for maior que o espaço disponível */
+}
+.title-sells {
+  
+}

@@ -1,1 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <title>DRASHBOARD</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <img class="back" src="back.png">
+  <strong class="name">Drashboard</strong>
+  <strong class="welcome">Boas-vindas, João Manoel</strong>
+  <span class="resumo">RESUMO <svg onclick="pass()" fill="none" height="100%" viewBox="0 0 24 24" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M15.18 12c0 1.76-1.42 3.18-3.18 3.18-1.76 0-3.18-1.42-3.18-3.18 0-1.76 1.42-3.18 3.18-3.18 1.76 0 3.18 1.42 3.18 3.18Z" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path><path d="M12 19.5c3.45 0 6.63-2.28 8.67-6.16.44-.83.44-1.85 0-2.68C18.63 6.78 15.45 4.5 12 4.5s-6.63 2.28-8.67 6.16c-.44.83-.44 1.85 0 2.68C5.37 17.22 8.55 19.5 12 19.5Z" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg></span>
+    <section class="vendas">
+    <strong class="nome">Vendas hoje</strong><span class="subnome">ontem</span>
+    <span class="value">R$ 00,00</span>
+    <span class="subvalue"> R$ 00,00</span>
+  </section>
+  <a class="vendas" href="./saque/">
+    <strong class="nome">Vendas totais</strong>
+    <span class="value g">R$ 47.689,00</span>
+    <i class='bx bxs-chevron-right'></i>
+  </a>
+  <section class="vendas">
+    <strong class="nome">Saldo pendente</strong>
+    <span class="value y">R$ 0,00</span>
+  </section>
+  <section class="vendas">
+    <span class="total">R$ 47.689,00 em vendas</span>
+    <span class="percent">47%</span>
+    <span class="meta">100k</span>
+    <div class="line"><div></div></div>
+  </section>
+  <button onclick="menu()" class="new">Nova venda<i class='bx bxs-cart-add'></i></button>
+  <section id="menu" class="menu depositmenu">
+    <div class="main-menu">
+      <span class="newvenda">Gerar transferencia</span>
+      <button onclick="menu()" class="closemenu">X</button>
+      <span class="valor">Valor da venda</span>
+      <input id="valor" placeholder="Valor (R$)">
+      <button class="submit" onclick="enviarRequisicao()">Gerar pagamento PIX</button>
+    </div>
+  </section>
+  <section id="chave" class="chave depositmenu">
+    <div class="main-chave">
+    <img class="qr" id="QR">
+      <span id="valorpix" class="code">...</span>
+    <span class="code" id="code">...</span>
+      <button onclick="copiarTexto()" class="copiar">Copiar chave PIX</button>
+      <span onclick="pix1()" class="left">Sair</span>
+    </div>
+  </section>
+  <section class="sells">
+    <span class="title-sells">Vendas no Pix</span>
+  </section>
+  <script>
+  function menu() {
+    const depositmenu = document.getElementById("menu");
+    depositmenu.classList.toggle("depositmenu");
+  }
+  function pix1() {
+    const chave = document.getElementById("chave");
+    chave.classList.toggle("depositmenu");
+  }
+  
+  // Função para enviar a requisição POST
+async function enviarRequisicao() {
+    const url = 'https://api.pushinpay.com.br/api/pix/cashIn';
+    const valuezz = document.getElementById("valor").value + "00";
+    const token = '4256|fuAL7AgoeQd2Ik5OW8b8cYz8qaMCPmwAudqhWxdk29b956d1';  // Substitua com seu token de autorização
 
+    const dados = {
+        value: valuezz,
+        webhook_url: "https://seu-site.com"  // Substitua com a URL do seu webhook
+    };
+
+    try {
+        const resposta = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dados)
+        });
+
+        if (resposta.ok) {
+            const respostaJson = await resposta.json();
+            console.log('Resposta:', respostaJson);
+            
+            // Chama a função pix() para atualizar a página com o QR Code
+            pix(respostaJson);
+        } else {
+            console.error('Erro na requisição:', resposta.statusText);
+        }
+    } catch (error) {
+        console.error('Erro na requisição:', error);
+    }
+  pix1();
+}
+
+// Função para atualizar a página com o QR Code retornado
+function pix(respostaJson) {
+    // Substitui o conteúdo do span com id "pix"
+    const spanPix = document.getElementById("code");
+    const valorpix = document.getElementById("valorpix");
+    if (spanPix) {
+        spanPix.textContent = respostaJson.qr_code;
+        valorpix.textContent = respostaJson.value
+    }
+
+    // Substitui a imagem com id "QR" pelo QR Code retornado
+    const imgQRCode = document.getElementById("QR");
+    if (imgQRCode && respostaJson.qr_code_base64) {
+        imgQRCode.src = respostaJson.qr_code_base64;
+    }
+}
+
+// Chame a função para enviar a requisição
+  function copiarTexto() {
+    const spanPix = document.getElementById("code");
+    if (spanPix) {
+        // Cria um campo temporário de texto
+        const tempInput = document.createElement("input");
+        tempInput.value = spanPix.textContent; // Define o valor como o texto do span
+        document.body.appendChild(tempInput); // Adiciona o campo temporário ao corpo do documento
+        tempInput.select(); // Seleciona o texto
+        document.execCommand("copy"); // Copia o texto selecionado
+        document.body.removeChild(tempInput); // Remove o campo temporário
+
+        alert("Texto copiado para a área de transferência!"); // Alerta que o texto foi copiado
+    } else {
+        alert("Elemento não encontrado.");
+    }
+}
+  </script>
+</body>
+</html>
