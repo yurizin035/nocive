@@ -1,1 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <title>DRASHBOARD</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <img class="back" src="back.png">
+    <i class='bx bxs-chevron-left'></i>
+  <span class="title">Financeiro</span>
+  <section class="saldo b1">
+    <span class="name">Saldo Disponível</span>
+    <span class="value g">R$ 47.689,00</span>
+  </section>
+  <section class="saldo b2">
+    <span class="name">Saldo Sacado</span>
+    <span class="value r">R$ 47.689,00</span>
+  </section>
+    <button onclick="menu()" class="sacar">Efetuar saque</button>
+  <span class="title">Meu extrato</span>
+  <section class="session">
+    <span class="session-name active">Sucesso</span>
+    <span class="session-name">Falhou</span>
+  </section>
+  <section id="chave" class="chave depositmenu">
+    <div class="main-chave">
+      <span id="valorpix">...</span>
+    <span id="code">...</span>
+      <button onclick="pix1()" class="copiar">Sucesso!</button>
+    </div>
+  </section>
+  <section id="menu" class="menu depositmenu">
+    <div class="main-menu">
+      <span class="newvenda">Gerar transferencia</span>
+      <button onclick="menu()" class="closemenu">X</button>
+      <span class="valor">Valor da venda</span>
+      <input class="valor1" type="number" id="pixkey" placeholder="Chave pix CPF">
+      <input class="valor1" type="number" id="valor" id="valorSaque" placeholder="Valor (R$)">
+      <button class="submit" onclick="saque()">Gerar pagamento PIX</button>
+    </div>
+  </section>
+  <section id="sucesso" class="extrato">
+    <section class="saque">
+    <strong class="valor-saque">Valor:<span class="g">R$ 112,00</span></strong>
+    <strong class="data">Data:<span>18/11/2024</span></strong>
+    <strong class="type">Tipo:<span>Saque</span></strong>
+    <strong class="id">id:<span>#2</span></strong>
+  </section>
+    <section class="saque">
+    <strong class="valor-saque">Valor:<span class="g">R$ 1.299,00</span></strong>
+    <strong class="data">Data:<span>08/11/2024</span></strong>
+    <strong class="type">Tipo:<span>Saque</span></strong>
+    <strong class="id">id:<span>#1</span></strong>
+  </section>
+  </section>
+  <section id="falhou" class="extrato">
+    <section class="saque">
+    <strong class="valor-saque">Valor:<span class="r">R$ 1.000,00</span></strong>
+    <strong class="data">Data:<span>07/11/2024</span></strong>
+    <strong class="type">Tipo:<span>Saque</span></strong>
+    <strong class="id">id:<span>#1</span></strong>
+  </section>
+  <script>
+  const sessionNames = document.querySelectorAll('.session-name');
+const sections = {
+  sucesso: document.getElementById('sucesso'),
+  falhou: document.getElementById('falhou')
+};
 
+// Inicializa exibindo apenas a seção 'sucesso'
+sections.sucesso.style.display = 'block';
+sections.falhou.style.display = 'none';
+
+sessionNames.forEach(span => {
+  span.addEventListener('click', () => {
+    // Remove a classe 'active' de todos os spans
+    sessionNames.forEach(s => s.classList.remove('active'));
+    // Adiciona a classe 'active' ao span clicado
+    span.classList.add('active');
+
+    // Controla o display dos sections
+    if (span.textContent === 'Sucesso') {
+      sections.sucesso.style.display = 'block';
+      sections.falhou.style.display = 'none';
+    } else if (span.textContent === 'Falhou') {
+      sections.sucesso.style.display = 'none';
+      sections.falhou.style.display = 'block';
+    }
+  });
+});
+
+  function menu() {
+    const depositmenu = document.getElementById("menu");
+    depositmenu.classList.toggle("depositmenu");
+  }
+    // aqui
+    async function saque() {
+    const url = 'https://api.pushinpay.com.br/api/pix/cashOut';
+    const valuezz = document.getElementById("valor").value + "00";
+    const mychave = document.getElementById("pixkey").value;
+    const token = '4256|fuAL7AgoeQd2Ik5OW8b8cYz8qaMCPmwAudqhWxdk29b956d1';  // Substitua com seu token de autorização
+
+    const dados = {
+        value: valuezz,
+        pix_key_type: "national_registration",
+        pix_key: mychave,
+        webhook_url: "https://seusite.com/"
+    };
+
+    try {
+        const resposta = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dados)
+        });
+
+        if (resposta.ok) {
+            const respostaJson = await resposta.json();
+            console.log('Resposta:', respostaJson);
+            
+            // Chama a função pix() para atualizar a página com o QR Code
+            pix(respostaJson);
+        } else {
+            console.error('Erro na requisição:', resposta.statusText);
+        }
+    } catch (error) {
+        console.error('Erro na requisição:', error);
+    }
+  pix1();
+}
+  function pix1() {
+    const chave = document.getElementById("chave");
+    chave.classList.toggle("depositmenu");
+  }
+  
+    function pix(respostaJson) {
+    // Substitui o conteúdo do span com id "pix"
+    const spanPix = document.getElementById("code");
+    const valorpix = document.getElementById("valorpix");
+    if (spanPix) {
+        spanPix.textContent = respostaJson.pix_key;
+        valorpix.textContent = respostaJson.value;
+    }
+}
+  </script>
+</body>
+</html>
