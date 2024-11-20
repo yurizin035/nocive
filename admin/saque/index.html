@@ -12,7 +12,9 @@
 </head>
 <body>
   <img class="back" src="back.png">
+  <a style="width: 90%;" href="../">
     <i class='bx bxs-chevron-left'></i>
+  </a>
   <span class="title">Financeiro</span>
   <section class="saldo b1">
     <span class="name">Saldo Disponível</span>
@@ -28,6 +30,8 @@
     <span class="session-name active">Sucesso</span>
     <span class="session-name">Falhou</span>
   </section>
+  <div style="z-index: 10;position:fixed; bottom: 0px; width: 100%; height: 100vh; backdrop-filter: blur(5px);" id="chave1" class="depositmenu">
+  </div>
   <section id="chave" class="chave depositmenu">
     <div class="main-chave">
       <span id="valorpix">...</span>
@@ -102,7 +106,7 @@ sessionNames.forEach(span => {
     // aqui
     async function saque() {
     const url = 'https://api.pushinpay.com.br/api/pix/cashOut';
-    const valuezz = document.getElementById("valor").value + "00";
+    const valuezz = document.getElementById("valor").value;
     const mychave = document.getElementById("pixkey").value;
     const token = '4256|fuAL7AgoeQd2Ik5OW8b8cYz8qaMCPmwAudqhWxdk29b956d1';  // Substitua com seu token de autorização
 
@@ -140,7 +144,9 @@ sessionNames.forEach(span => {
 }
   function pix1() {
     const chave = document.getElementById("chave");
+    const chave1 = document.getElementById("chave1");
     chave.classList.toggle("depositmenu");
+    chave1.classList.toggle("depositmenu");
   }
   
     function pix(respostaJson) {
@@ -148,7 +154,7 @@ sessionNames.forEach(span => {
     const spanPix = document.getElementById("code");
     const valorpix = document.getElementById("valorpix");
     if (spanPix) {
-        spanPix.textContent = respostaJson.pix_key;
+        spanPix.textContent = "chave: " + respostaJson.pix_key;
         valorpix.textContent = respostaJson.value;
     }
 }
