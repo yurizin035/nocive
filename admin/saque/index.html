@@ -18,7 +18,7 @@
   <span class="title">Financeiro</span>
   <section class="saldo b1">
     <span class="name">Saldo Disponível</span>
-    <span class="value g">R$ 1.367,00</span>
+    <span class="value g">R$ 1.467,00</span>
   </section>
   <section class="saldo b2">
     <span class="name">Saldo Sacado</span>
@@ -103,45 +103,44 @@ sessionNames.forEach(span => {
     depositmenu.classList.toggle("depositmenu");
   }
     // aqui
-    async function saque() {
-      document.getElementById('valor').addEventListener('input', function() {
-  this.value = this.value.replace(/,/g, ''); 
-});
-    const url = 'https://api.pushinpay.com.br/api/pix/cashOut';
-    const valuezz = document.getElementById("valor").value;
-    const mychave = document.getElementById("pixkey").value;
-    const token = '4256|fuAL7AgoeQd2Ik5OW8b8cYz8qaMCPmwAudqhWxdk29b956d1';  // Substitua com seu token de autorização
+ async function saque() {
+  const inputValor = document.getElementById('valor');
+  inputValor.value = inputValor.value.replace(/,/g, ''); // Remove as vírgulas do input
 
-    const dados = {
-        value: valuezz,
-        pix_key_type: "national_registration",
-        pix_key: mychave,
-        webhook_url: "https://seusite.com/"
-    };
+  const url = 'https://api.pushinpay.com.br/api/pix/cashOut';
+  const valuezz = inputValor.value;
+  const mychave = document.getElementById("pixkey").value;
+  const token = '4256|fuAL7AgoeQd2Ik5OW8b8cYz8qaMCPmwAudqhWxdk29b956d1';  // Substitua com seu token de autorização
 
-    try {
-        const resposta = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(dados)
-        });
+  const dados = {
+      value: valuezz,
+      pix_key_type: "national_registration",
+      pix_key: mychave,
+      webhook_url: "https://seusite.com/"
+  };
 
-        if (resposta.ok) {
-            const respostaJson = await resposta.json();
-            console.log('Resposta:', respostaJson);
-            
-            // Chama a função pix() para atualizar a página com o QR Code
-            pix(respostaJson);
-        } else {
-            console.error('Erro na requisição:', resposta.statusText);
-        }
-    } catch (error) {
-        console.error('Erro na requisição:', error);
-    }
+  try {
+      const resposta = await fetch(url, {
+          method: 'POST',
+          headers: {
+              'Authorization': `Bearer ${token}`,
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(dados)
+      });
+
+      if (resposta.ok) {
+          const respostaJson = await resposta.json();
+          console.log('Resposta:', respostaJson);
+          pix(respostaJson);
+      } else {
+          console.error('Erro na requisição:', resposta.statusText);
+      }
+  } catch (error) {
+      console.error('Erro na requisição:', error);
+  }
+
   pix1();
 }
   function pix1() {
