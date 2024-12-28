@@ -105,6 +105,9 @@ sessionNames.forEach(span => {
   }
     // aqui
     async function saque() {
+      document.getElementById('valor').addEventListener('input', function() {
+  this.value = this.value.replace(/,/g, ''); 
+});
     const url = 'https://api.pushinpay.com.br/api/pix/cashOut';
     const valuezz = document.getElementById("valor").value;
     const mychave = document.getElementById("pixkey").value;
